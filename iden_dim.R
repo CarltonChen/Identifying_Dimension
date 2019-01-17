@@ -4,12 +4,19 @@ iden_dim = function(eig, d = 10, n, alpha = 0.1, pic = T){
   m = min(Tu/2, m1, n/2)
   
   if(T){
+    # Ratio of Explained Variance
+    # "EV"
     ratio = cumsum(eig[1:d]) / sum(eig[eig > 0])
-    d1 = min(which(ratio >= 1-alpha))
+    if(max(ratio) < 1-alpha){
+      d1 = d
+    }else{
+      d1 = min(which(ratio >= 1-alpha))
+    }
   }
   
   if(T){
     # Eigen Ratio: Lam, C. and Yao, Q., 2012
+    # "ER"
     eig0 = eig[1:m]
     r_er = eig0[2:m] / eig0[1:(m - 1)]
     d2 = which.min(r_er[1:d])
@@ -17,6 +24,7 @@ iden_dim = function(eig, d = 10, n, alpha = 0.1, pic = T){
   
   if(T){
     # Growth Ratio: Ahn and Horenstein 2013
+    # "GR"
     s_eig = rev(cumsum(rev(eig[1:m])))
     gr1 = log(s_eig[2:(m-1)] / s_eig[3:m])
     gr2 = log(s_eig[1:(m-2)] / s_eig[2:(m-1)])
@@ -26,6 +34,7 @@ iden_dim = function(eig, d = 10, n, alpha = 0.1, pic = T){
   
   if(T){
     # Contribution Ratio: Xia, Liang, et.al 2018
+    # "CR"
     s_eig = rev(cumsum(rev(eig[1:m])))
     cr1 = eig[2:m] / s_eig[2:m]
     cr2 = eig[1:(m - 1)] / s_eig[1:(m - 1)]
@@ -35,10 +44,11 @@ iden_dim = function(eig, d = 10, n, alpha = 0.1, pic = T){
   
   if(T){
     # Information Criteria: Cho, H. et al. (2016) 
-    
+    # "IC"
     iden_dim_ic = function(lambdas, d, n, pic = T){
       # Cho, H. et al. (2016) 
       
+      n = n
       lbd0 = lambdas
       
       tau_bot = 0
@@ -107,8 +117,9 @@ iden_dim = function(eig, d = 10, n, alpha = 0.1, pic = T){
       return(r)
       
     }
-    d5 = iden_dim_ic(lambdas = eig, pic = pic)
+    
+    d5 = iden_dim_ic(lambdas = eig, d = d, n = n, pic = pic)
   }
   
-  return(c(d1, d2, d3, d4, d5))
+  return(c(EV = d1, ER = d2, GR = d3, CR = d4, IC = d5))
 }
