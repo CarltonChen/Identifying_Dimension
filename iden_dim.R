@@ -1,7 +1,6 @@
 iden_dim = function(eig, d = 10, n, alpha = 0.1, pic = T){
-  m1 = max(which(eig >= 0))
-  # m = min(Tu, m1, n, d)
-  m = min(Tu/2, m1, n/2)
+
+  m = min(max(which(eig >= 0)), n/2)
   
   if(T){
     # Ratio of Explained Variance
@@ -45,9 +44,10 @@ iden_dim = function(eig, d = 10, n, alpha = 0.1, pic = T){
   if(T){
     # Information Criteria: Cho, H. et al. (2016) 
     # "IC"
+    
     iden_dim_ic = function(lambdas, d, n, pic = T){
       # Cho, H. et al. (2016) 
-      
+  
       n = n
       lbd0 = lambdas
       
