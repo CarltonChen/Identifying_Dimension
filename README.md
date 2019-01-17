@@ -1,5 +1,5 @@
 # Identifying_Dimension
-Determining the number of factors for high-dimensional matrices
+Determining the number of factors
 
 ## Methods
 * Ratio of Explained Variance (**EV**)
